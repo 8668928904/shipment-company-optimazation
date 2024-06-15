@@ -1,0 +1,36 @@
+public class ShippingCompanyOptimization {
+    public static Integer minimumContainers(Integer[] shipments, Integer[] containerLimits) {
+        Integer shipmentsSize = shipments.size;
+        Integer containersSize = containerLimits.size;
+
+        // Sort arrays in descending order
+        Integer[] sortedShipments = shipments.clone();
+        Integer[] sortedContainerLimits = containerLimits.clone();
+        sortedShipments.sort((a, b) => b - a);
+        sortedContainerLimits.sort((a, b) => b - a);
+
+        Integer containersNeeded = 0;
+        Integer currentContainer = 0;
+
+        for (Integer shipment : sortedShipments) {
+            while (currentContainer < containersSize && sortedContainerLimits[currentContainer] < shipment) {
+                currentContainer++;
+            }
+
+            if (currentContainer == containersSize) {
+                return -1;
+            }
+
+            sortedContainerLimits[currentContainer] -= shipment;
+            containersNeeded++;
+        }
+
+        return containersNeeded;
+    }
+}
+Integer[] shipments = new Integer[] {10, 20, 30};
+Integer[] container_limits = new Integer[] {15, 15, 20, 10};
+
+Integer result = ShippingCompanyOptimization.minimumContainers(shipments, container_limits);
+System.debug(result);
+
